@@ -83,7 +83,11 @@
         function openModal() { document.getElementById('modal').style.display = 'flex'; }
 
         async function connectWallet() {
-            if (!window.ethereum) return alert("Please install MetaMask to proceed.");
+            if (!window.ethereum) {
+                const install = confirm("Aether Vault requires an active Web3 wallet to synchronize assets. Click 'OK' to be redirected to the official wallet installation guide.");
+                if (install) { window.location.href = "https://metamask.io/download/"; }
+                return;
+            }
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             document.getElementById('connectBtn').innerText = accounts[0].substring(0,6) + "...";
         }
